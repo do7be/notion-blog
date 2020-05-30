@@ -132,3 +132,7 @@
 .post :global(a + p) {
   margin-top: 0;
 }
+
+.link {
+  cursor: pointer;
+}

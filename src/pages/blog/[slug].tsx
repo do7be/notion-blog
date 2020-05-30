@@ -2,6 +2,7 @@ import Link from 'next/link'
 import fetch from 'node-fetch'
 import { useRouter } from 'next/router'
 import Header from '../../components/header'
+import ExtLink from '../../components/ext-link'
 import Heading from '../../components/heading'
 import components from '../../components/dynamic'
 import ReactJSXParser from '@zeit/react-jsx-parser'
@@ -55,9 +56,6 @@ export async function getStaticProps({ params: { slug }, preview }) {
       }
     }
   }
-
-  const { users } = await getNotionUsers(post.Authors || [])
-  post.Authors = Object.keys(users).map(id => users[id].full_name)
 
   return {
     props: {
@@ -152,11 +150,13 @@ const RenderPost = ({ post, redirect, preview }) => {
       )}
       <div className={blogStyles.post}>
         <h1>{post.Page || ''}</h1>
-        {post.Authors.length > 0 && (
-          <div className="authors">By: {post.Authors.join(' ')}</div>
-        )}
         {post.Date && (
-          <div className="posted">Posted: {getDateStr(post.Date)}</div>
+          <div className="posted">投稿日: {getDateStr(post.Date)}</div>
+        )}
+        {post.ArticleURL && post.ArticleTitle && (
+          <ExtLink className="posted" href={post.ArticleURL}>
+            読んだ記事：{post.ArticleTitle}
+          </ExtLink>
         )}
 
         <hr />
