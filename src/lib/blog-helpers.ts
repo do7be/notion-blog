@@ -1,13 +1,11 @@
+import { format } from 'date-fns'
+
 export const getBlogLink = (slug: string) => {
   return `/entry/${slug}`
 }
 
 export const getDateStr = date => {
-  return new Date(date).toLocaleString('ja', {
-    month: '2-digit',
-    day: '2-digit',
-    year: 'numeric',
-  })
+  return format(date, 'yyyy/MM/dd')
 }
 
 export function compareDate(a: any, b: any) {
