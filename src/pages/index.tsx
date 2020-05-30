@@ -4,9 +4,13 @@ import Header from '../components/header'
 import blogStyles from '../styles/blog.module.css'
 import sharedStyles from '../styles/shared.module.css'
 
-import { getBlogLink, getDateStr, postIsPublished } from '../lib/blog-helpers'
+import {
+  getBlogLink,
+  getDateStr,
+  postIsPublished,
+  compareDate,
+} from '../lib/blog-helpers'
 import { textBlock } from '../lib/notion/renderers'
-import getNotionUsers from '../lib/notion/getNotionUsers'
 import getBlogIndex from '../lib/notion/getBlogIndex'
 
 export async function getStaticProps({ preview }) {
@@ -26,13 +30,8 @@ export async function getStaticProps({ preview }) {
       }
       return post
     })
+    .sort(compareDate)
     .filter(Boolean)
-
-  const { users } = await getNotionUsers([...authorsToGet])
-
-  posts.map(post => {
-    post.Authors = post.Authors.map(id => users[id].full_name)
-  })
 
   return {
     props: {

@@ -10,6 +10,10 @@ export const getDateStr = date => {
   })
 }
 
+export function compareDate(a: any, b: any) {
+  return a.Date < b.date ? 1 : -1
+}
+
 export const postIsPublished = (post: any) => {
   return post.Published === 'Yes'
 }
