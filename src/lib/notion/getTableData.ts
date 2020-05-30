@@ -67,7 +67,7 @@ export default async function loadTable(collectionBlock: any, isPosts = false) {
             // calculate offset from provided time zone
             const timezoneOffset =
               new Date(
-                new Date().toLocaleString('en-US', {
+                new Date().toLocaleString('ja', {
                   timeZone: type[1].time_zone,
                 })
               ).getTime() - new Date().getTime()
