@@ -149,14 +149,17 @@ const RenderPost = ({ post, redirect, preview }) => {
         </div>
       )}
       <div className={blogStyles.post}>
-        <h1>{post.Page || ''}</h1>
+        <h1 className={blogStyles.title}>{post.Page || ''}</h1>
         {post.Date && (
           <div className="posted">投稿日: {getDateStr(post.Date)}</div>
         )}
         {post.ArticleURL && post.ArticleTitle && (
-          <ExtLink className="posted" href={post.ArticleURL}>
-            読んだ記事：{post.ArticleTitle}
-          </ExtLink>
+          <>
+            <span>読んだ記事：</span>
+            <ExtLink className="posted" href={post.ArticleURL}>
+              {post.ArticleTitle}
+            </ExtLink>
+          </>
         )}
 
         <hr />

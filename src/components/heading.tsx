@@ -19,7 +19,11 @@ export default ({ children: component, id }: { children: any; id?: any }) => {
   }
 
   return (
-    <a href={`#${id}`} id={id} style={{ color: 'inherit' }}>
+    <a
+      href={`#${id}`}
+      id={id}
+      style={{ color: 'inherit', display: 'inline-block' }}
+    >
       {component}
     </a>
   )

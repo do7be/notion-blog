@@ -1,5 +1,5 @@
 export const getBlogLink = (slug: string) => {
-  return `/blog/${slug}`
+  return `/entry/${slug}`
 }
 
 export const getDateStr = date => {
