@@ -30,8 +30,8 @@ export async function getStaticProps({ preview }) {
       }
       return post
     })
-    .sort(compareDate)
     .filter(Boolean)
+    .sort(compareDate)
 
   return {
     props: {
