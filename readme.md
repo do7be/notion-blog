@@ -1,3 +1,7 @@
+https://do7be.now.sh/
+
+Notion Blog で作ったブログ
+
 # Notion Blog
 
 This is an example Next.js project that shows Next.js' upcoming SSG (static-site generation) support using Notion's **private** API for a backend.
