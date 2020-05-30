@@ -9,7 +9,7 @@ export const getDateStr = date => {
 }
 
 export function compareDate(a: any, b: any) {
-  return a.Date < b.date ? 1 : -1
+  return a.Date < b.Date ? 1 : -1
 }
 
 export const postIsPublished = (post: any) => {
