@@ -124,7 +124,8 @@
   margin-bottom: 0.5em;
 }
 
-.post {
+.post,
+.zengoNavigation {
   max-width: calc(600px + 10%);
   margin: 0 auto;
   padding: 5%;
@@ -140,4 +141,9 @@
 
 .link {
   cursor: pointer;
+}
+
+.zengoNavigation {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }

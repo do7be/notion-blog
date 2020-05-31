@@ -7,31 +7,14 @@ import sharedStyles from '../styles/shared.module.css'
 import {
   getBlogLink,
   getDateStr,
-  postIsPublished,
-  compareDate,
+  postsTableToPostsMap,
 } from '../lib/blog-helpers'
 import { textBlock } from '../lib/notion/renderers'
 import getBlogIndex from '../lib/notion/getBlogIndex'
 
-export async function getStaticProps({ preview }) {
+export async function getStaticProps({ preview }: { preview: boolean }) {
   const postsTable = await getBlogIndex()
-
-  const authorsToGet: Set<string> = new Set()
-  const posts: any[] = Object.keys(postsTable)
-    .map(slug => {
-      const post = postsTable[slug]
-      // remove draft posts in production
-      if (!preview && !postIsPublished(post)) {
-        return null
-      }
-      post.Authors = post.Authors || []
-      for (const author of post.Authors) {
-        authorsToGet.add(author)
-      }
-      return post
-    })
-    .filter(Boolean)
-    .sort(compareDate)
+  const posts = postsTableToPostsMap(postsTable, preview)
 
   return {
     props: {

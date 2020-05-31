@@ -16,6 +16,24 @@ export const postIsPublished = (post: any) => {
   return post.Published === 'Yes'
 }
 
+export function postsTableToPostsMap(
+  postsTable: any,
+  preview: boolean = false
+) {
+  return Object.keys(postsTable)
+    .map(slug => {
+      const post = postsTable[slug]
+      // remove draft posts in production
+      if (!preview && !postIsPublished(post)) {
+        return null
+      }
+      post.Authors = post.Authors || []
+      return post
+    })
+    .filter(Boolean)
+    .sort(compareDate)
+}
+
 export const normalizeSlug = slug => {
   if (typeof slug !== 'string') return slug
 

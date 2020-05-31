@@ -11,14 +11,28 @@ import { textBlock } from '../../lib/notion/renderers'
 import getPageData from '../../lib/notion/getPageData'
 import React, { CSSProperties, useEffect } from 'react'
 import getBlogIndex from '../../lib/notion/getBlogIndex'
-import getNotionUsers from '../../lib/notion/getNotionUsers'
-import { getBlogLink, getDateStr } from '../../lib/blog-helpers'
+import {
+  getBlogLink,
+  getDateStr,
+  postsTableToPostsMap,
+} from '../../lib/blog-helpers'
 
 // Get the data for each blog post
-export async function getStaticProps({ params: { slug }, preview }) {
+export async function getStaticProps({
+  params: { slug },
+  preview,
+}: {
+  params: any
+  preview: boolean
+}) {
   // load the postsTable so that we can get the page's ID
   const postsTable = await getBlogIndex()
   const post = postsTable[slug]
+  const posts = postsTableToPostsMap(postsTable, preview)
+  const currentIndex = posts.findIndex(post => post.Slug === slug)
+  const prevPost =
+    currentIndex + 1 < posts.length ? posts[currentIndex + 1] : null
+  const nextPost = currentIndex - 1 >= 0 ? posts[currentIndex - 1] : null
 
   // if we can't find the post or if it is unpublished and
   // viewed without preview mode then we just redirect to /blog
@@ -60,6 +74,8 @@ export async function getStaticProps({ params: { slug }, preview }) {
   return {
     props: {
       post,
+      nextPost,
+      prevPost,
       preview: preview || false,
     },
     revalidate: 10,
@@ -81,7 +97,7 @@ export async function getStaticPaths() {
 
 const listTypes = new Set(['bulleted_list', 'numbered_list'])
 
-const RenderPost = ({ post, redirect, preview }) => {
+const RenderPost = ({ post, nextPost, prevPost, redirect, preview }) => {
   const router = useRouter()
 
   let listTagName: string | null = null
@@ -411,6 +427,31 @@ const RenderPost = ({ post, redirect, preview }) => {
           return toRender
         })}
       </div>
+      <nav className={blogStyles.zengoNavigation}>
+        {nextPost !== null && (
+          <Link href="/entry/[slug]" as={getBlogLink(nextPost.Slug)}>
+            <div className={blogStyles.titleContainer}>
+              {!nextPost.Published && (
+                <span className={blogStyles.draftBadge}>Draft</span>
+              )}
+              <a className={blogStyles.link}>{`<${nextPost.Page}`}</a>
+            </div>
+          </Link>
+        )}
+        {prevPost !== null && (
+          <Link href="/entry/[slug]" as={getBlogLink(prevPost.Slug)}>
+            <div
+              className={blogStyles.titleContainer}
+              style={{ justifyContent: 'flex-end' }}
+            >
+              {!prevPost.Published && (
+                <span className={blogStyles.draftBadge}>Draft</span>
+              )}
+              <a className={blogStyles.link}>{`${prevPost.Page}>`}</a>
+            </div>
+          </Link>
+        )}
+      </nav>
     </>
   )
 }
