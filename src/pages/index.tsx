@@ -58,6 +58,7 @@ export default ({ posts = [], preview }) => {
                   </div>
                 </Link>
               </h3>
+              {post.Categories && <div>カテゴリー: {post.Categories}</div>}
               {post.Date && (
                 <div className="posted">投稿日: {getDateStr(post.Date)}</div>
               )}
