@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import Link from 'next/link'
 import Header from '../components/header'
 
@@ -11,6 +12,7 @@ import {
 } from '../lib/blog-helpers'
 import { textBlock } from '../lib/notion/renderers'
 import getBlogIndex from '../lib/notion/getBlogIndex'
+import { useKeysToPastel } from '../lib/key-to-pastel'
 
 export async function getStaticProps({ preview }: { preview: boolean }) {
   const postsTable = await getBlogIndex()
@@ -26,6 +28,9 @@ export async function getStaticProps({ preview }: { preview: boolean }) {
 }
 
 export default ({ posts = [], preview }) => {
+  const categories = useMemo(() => posts.map(post => post.Categories), [posts])
+  const pastels = useKeysToPastel(categories)
+
   return (
     <>
       <Header titlePre="" />
@@ -45,7 +50,7 @@ export default ({ posts = [], preview }) => {
         {posts.length === 0 && (
           <p className={blogStyles.noPosts}>There are no posts yet</p>
         )}
-        {posts.map(post => {
+        {posts.map((post, index) => {
           return (
             <div className={blogStyles.postPreview} key={post.Slug}>
               <h3>
@@ -58,7 +63,23 @@ export default ({ posts = [], preview }) => {
                   </div>
                 </Link>
               </h3>
-              {post.Categories && <div>カテゴリー: {post.Categories}</div>}
+              {post.Categories && pastels && (
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  カテゴリー:{' '}
+                  <span
+                    style={{
+                      backgroundColor: `#${pastels[index]}`,
+                      color: '#fff',
+                      borderRadius: '4px',
+                      padding: '0 4px',
+                      fontSize: '16px',
+                      marginLeft: '4px',
+                    }}
+                  >
+                    {post.Categories}
+                  </span>
+                </div>
+              )}
               {post.Date && (
                 <div className="posted">投稿日: {getDateStr(post.Date)}</div>
               )}

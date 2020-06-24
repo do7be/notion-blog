@@ -16,6 +16,7 @@ import {
   getDateStr,
   postsTableToPostsMap,
 } from '../../lib/blog-helpers'
+import { useKeyToPastel } from '../../lib/key-to-pastel'
 
 // Get the data for each blog post
 export async function getStaticProps({
@@ -111,6 +112,8 @@ const RenderPost = ({ post, nextPost, prevPost, redirect, preview }) => {
     }
   } = {}
 
+  const pastel = useKeyToPastel(post.Categories)
+
   useEffect(() => {
     const twitterSrc = 'https://platform.twitter.com/widgets.js'
     // make sure to initialize any new widgets loading on
@@ -166,7 +169,23 @@ const RenderPost = ({ post, nextPost, prevPost, redirect, preview }) => {
       )}
       <div className={blogStyles.post}>
         <h1 className={blogStyles.title}>{post.Page || ''}</h1>
-        {post.Categories && <div>カテゴリー: {post.Categories}</div>}
+        {post.Categories && (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            カテゴリー:{' '}
+            <span
+              style={{
+                backgroundColor: `#${pastel}`,
+                color: '#fff',
+                borderRadius: '4px',
+                padding: '0 4px',
+                fontSize: '16px',
+                marginLeft: '4px',
+              }}
+            >
+              {post.Categories}
+            </span>
+          </div>
+        )}
         {post.Date && (
           <div className="posted">投稿日: {getDateStr(post.Date)}</div>
         )}
