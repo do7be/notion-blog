@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useLayoutEffect, useState } from 'react'
 import md5 from 'crypto-js/md5'
 import colorConvert from 'color-convert'
 
 // TODO: npm package化したい
 export function useKeyToPastel(key: string) {
   const [pastel, setPastel] = useState<string>()
-  useEffect(() => {
+  useLayoutEffect(() => {
     setPastel(keyToPastel(key))
   }, [key])
   return pastel
@@ -13,7 +13,7 @@ export function useKeyToPastel(key: string) {
 
 export function useKeysToPastel(keys: string[]) {
   const [pastels, setPastels] = useState<string[]>([])
-  useEffect(() => {
+  useLayoutEffect(() => {
     setPastels(keys.map(key => keyToPastel(key)))
   }, [keys])
   return pastels
