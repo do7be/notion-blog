@@ -147,3 +147,16 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
+
+.categoryContainer {
+  display: flex;
+  align-items: center;
+}
+
+.category {
+  color: #fff;
+  border-radius: 4px;
+  padding: 0 4px;
+  font-size: 16px;
+  margin-left: 4px;
+}

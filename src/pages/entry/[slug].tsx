@@ -170,16 +170,12 @@ const RenderPost = ({ post, nextPost, prevPost, redirect, preview }) => {
       <div className={blogStyles.post}>
         <h1 className={blogStyles.title}>{post.Page || ''}</h1>
         {post.Categories && (
-          <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div className={blogStyles.categoryContainer}>
             カテゴリー:{' '}
             <span
+              className={blogStyles.category}
               style={{
                 backgroundColor: `#${pastel}`,
-                color: '#fff',
-                borderRadius: '4px',
-                padding: '0 4px',
-                fontSize: '16px',
-                marginLeft: '4px',
               }}
             >
               {post.Categories}

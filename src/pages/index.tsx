@@ -64,16 +64,12 @@ export default ({ posts = [], preview }) => {
                 </Link>
               </h3>
               {post.Categories && pastels && (
-                <div style={{ display: 'flex', alignItems: 'center' }}>
+                <div className={blogStyles.categoryContainer}>
                   カテゴリー:{' '}
                   <span
+                    className={blogStyles.category}
                     style={{
                       backgroundColor: `#${pastels[index]}`,
-                      color: '#fff',
-                      borderRadius: '4px',
-                      padding: '0 4px',
-                      fontSize: '16px',
-                      marginLeft: '4px',
                     }}
                   >
                     {post.Categories}
