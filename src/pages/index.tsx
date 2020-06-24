@@ -63,7 +63,7 @@ export default ({ posts = [], preview }) => {
                   </div>
                 </Link>
               </h3>
-              {post.Categories && pastels && (
+              {post.Categories && (
                 <div className={blogStyles.categoryContainer}>
                   カテゴリー:{' '}
                   <span

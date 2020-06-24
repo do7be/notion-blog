@@ -12,7 +12,7 @@ export function useKeyToPastel(key: string) {
 }
 
 export function useKeysToPastel(keys: string[]) {
-  const [pastels, setPastels] = useState<string[]>()
+  const [pastels, setPastels] = useState<string[]>([])
   useEffect(() => {
     setPastels(keys.map(key => keyToPastel(key)))
   }, [keys])
