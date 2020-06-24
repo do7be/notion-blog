@@ -25,7 +25,7 @@ function keyToPastel(key: string) {
     .slice(0, 3)
   const h = parseInt(base64, 16) % 360
   const s = 80
-  const l = 90
+  const l = 80
 
   const rgb = colorConvert.hsl.rgb([h, s, l])
   const rgbHex = colorConvert.rgb.hex(rgb)
