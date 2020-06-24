@@ -112,7 +112,7 @@ const RenderPost = ({ post, nextPost, prevPost, redirect, preview }) => {
     }
   } = {}
 
-  const pastel = useKeyToPastel(post.Categories)
+  const pastel = useKeyToPastel(post ? post.Categories : '')
 
   useEffect(() => {
     const twitterSrc = 'https://platform.twitter.com/widgets.js'
