@@ -5,6 +5,7 @@ import Header from '../../components/header'
 import ExtLink from '../../components/ext-link'
 import Heading from '../../components/heading'
 import components from '../../components/dynamic'
+import CategoryBadge from '../../components/categoryBadge'
 import ReactJSXParser from '@zeit/react-jsx-parser'
 import blogStyles from '../../styles/blog.module.css'
 import { textBlock } from '../../lib/notion/renderers'
@@ -13,6 +14,7 @@ import React, { CSSProperties, useEffect } from 'react'
 import getBlogIndex from '../../lib/notion/getBlogIndex'
 import {
   getBlogLink,
+  getCategoryLink,
   getDateStr,
   postsTableToPostsMap,
 } from '../../lib/blog-helpers'
@@ -172,14 +174,14 @@ const RenderPost = ({ post, nextPost, prevPost, redirect, preview }) => {
         {post.Categories && (
           <div className={blogStyles.categoryContainer}>
             カテゴリー:{' '}
-            <span
-              className={blogStyles.category}
-              style={{
-                backgroundColor: `#${pastel}`,
-              }}
+            <Link
+              href="/category/[category]"
+              as={getCategoryLink(post.Categories)}
             >
-              {post.Categories}
-            </span>
+              <a>
+                <CategoryBadge category={post.Categories} pastel={pastel} />
+              </a>
+            </Link>
           </div>
         )}
         {post.Date && (

@@ -1,37 +1,53 @@
-import { useMemo } from 'react'
 import Link from 'next/link'
-import Header from '../components/header'
-import CategoryBadge from '../components/categoryBadge'
+import Header from '../../components/header'
+import CategoryBadge from '../../components/categoryBadge'
 
-import blogStyles from '../styles/blog.module.css'
-import sharedStyles from '../styles/shared.module.css'
+import blogStyles from '../../styles/blog.module.css'
+import sharedStyles from '../../styles/shared.module.css'
 
 import {
   getBlogLink,
   getCategoryLink,
   getDateStr,
   postsTableToPostsMap,
-} from '../lib/blog-helpers'
-import { textBlock } from '../lib/notion/renderers'
-import getBlogIndex from '../lib/notion/getBlogIndex'
-import { useKeysToPastel } from '../lib/key-to-pastel'
+} from '../../lib/blog-helpers'
+import { textBlock } from '../../lib/notion/renderers'
+import getBlogIndex from '../../lib/notion/getBlogIndex'
+import { useKeyToPastel } from '../../lib/key-to-pastel'
 
-export async function getStaticProps({ preview }: { preview: boolean }) {
+export async function getStaticProps({
+  params: { category },
+  preview,
+}: {
+  params: any
+  preview: boolean
+}) {
   const postsTable = await getBlogIndex()
   const posts = postsTableToPostsMap(postsTable, preview)
+  const filtered = posts.filter(post => post.Categories === category)
 
   return {
     props: {
       preview: preview || false,
-      posts,
+      posts: filtered,
+      category,
     },
     revalidate: 10,
   }
 }
 
-export default ({ posts = [], preview }) => {
-  const categories = useMemo(() => posts.map(post => post.Categories), [posts])
-  const pastels = useKeysToPastel(categories)
+export async function getStaticPaths() {
+  const postsTable = await getBlogIndex()
+  return {
+    paths: Object.keys(postsTable)
+      .filter(post => postsTable[post].Published === 'Yes')
+      .map(Categories => getCategoryLink(Categories)),
+    fallback: true,
+  }
+}
+
+export default ({ posts = [], preview, category }) => {
+  const pastel = useKeyToPastel(category)
 
   return (
     <>
@@ -48,11 +64,21 @@ export default ({ posts = [], preview }) => {
         </div>
       )}
       <div className={`${sharedStyles.layout} ${blogStyles.blogIndex}`}>
-        <h1>do7beが読んだ記事一覧</h1>
+        <h1>
+          do7beが読んだ記事一覧{' '}
+          <span
+            className={blogStyles.category}
+            style={{
+              backgroundColor: `#${pastel}`,
+            }}
+          >
+            {category}
+          </span>
+        </h1>
         {posts.length === 0 && (
           <p className={blogStyles.noPosts}>There are no posts yet</p>
         )}
-        {posts.map((post, index) => {
+        {posts.map(post => {
           return (
             <div className={blogStyles.postPreview} key={post.Slug}>
               <h3>
@@ -65,20 +91,10 @@ export default ({ posts = [], preview }) => {
                   </div>
                 </Link>
               </h3>
-              {post.Categories && pastels[index] && (
+              {post.Categories && (
                 <div className={blogStyles.categoryContainer}>
                   カテゴリー:{' '}
-                  <Link
-                    href="/category/[category]"
-                    as={getCategoryLink(post.Categories)}
-                  >
-                    <a>
-                      <CategoryBadge
-                        category={post.Categories}
-                        pastel={pastels[index]}
-                      />
-                    </a>
-                  </Link>
+                  <CategoryBadge category={post.Categories} pastel={pastel} />
                 </div>
               )}
               {post.Date && (

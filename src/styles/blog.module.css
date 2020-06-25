@@ -153,9 +153,15 @@
   align-items: center;
 }
 
+.categoryContainer a {
+  color: inherit;
+}
+
 .category {
+  display: inline-block;
   border-radius: 4px;
   padding: 0 4px;
   font-size: 16px;
   margin-left: 4px;
+  font-weight: normal;
 }

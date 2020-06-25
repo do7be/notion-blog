@@ -4,6 +4,10 @@ export const getBlogLink = (slug: string) => {
   return `/entry/${slug}`
 }
 
+export const getCategoryLink = (category: string) => {
+  return `/category/${category}`
+}
+
 export const getDateStr = date => {
   return format(date, 'yyyy/MM/dd')
 }
